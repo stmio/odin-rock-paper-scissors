@@ -1,5 +1,5 @@
-let playerScore = 0,
-  computerScore = 0;
+let playerScore = 0;
+let computerScore = 0;
 
 function getComputerChoice() {
   let rng = Math.floor(Math.random() * 3) + 1;
@@ -47,12 +47,6 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function game() {
-  for (let i = 0; i < 5; i++) {
-    console.log(
-      playRound(prompt("Rock, paper or scissors?"), getComputerChoice())
-    );
-  }
-
   console.log(
     playerScore > computerScore
       ? "You win!"
@@ -65,4 +59,12 @@ function game() {
   console.log("The computer had " + computerScore + " points.");
 }
 
-game();
+const buttons = document.querySelectorAll(".buttons button");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () =>
+    console.log(playRound(button.id, getComputerChoice()))
+  );
+});
+
+// game();
