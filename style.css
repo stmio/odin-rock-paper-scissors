@@ -11,6 +11,10 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+.info {
+  margin: 16px;
+}
+
 .buttons button {
   height: 150px;
   width: 150px;
@@ -25,5 +29,11 @@ body {
   display: flex;
   gap: 64px;
   text-align: center;
-  font-size: 38px;
+  font-size: 24px;
+  margin: 16px;
+}
+
+#player-selection,
+#computer-selection {
+  font-size: 52px;
 }

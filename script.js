@@ -12,6 +12,8 @@ function getComputerChoice() {
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase();
 
+  updateEmoji(playerSelection, computerSelection);
+
   if (playerSelection === computerSelection) {
     return "It's a draw! The computer chose " + computerSelection;
   }
@@ -46,6 +48,27 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
+function updateEmoji(player, computer) {
+  const playerEmoji = document.getElementById("player-selection");
+  const computerEmoji = document.getElementById("computer-selection");
+
+  if (player == "rock") playerEmoji.textContent = "✊";
+  if (player == "paper") playerEmoji.textContent = "✋";
+  if (player == "scissors") playerEmoji.textContent = "✌️";
+
+  if (computer == "rock") computerEmoji.textContent = "✊";
+  if (computer == "paper") computerEmoji.textContent = "✋";
+  if (computer == "scissors") computerEmoji.textContent = "✌️";
+}
+
+function updateScore(player, computer) {
+  const playerScore = document.getElementById("player-score");
+  const computerScore = document.getElementById("computer-score");
+
+  playerScore.textContent = player;
+  computerScore.textContent = computer;
+}
+
 function game() {
   console.log(
     playerScore > computerScore
@@ -62,9 +85,10 @@ function game() {
 const buttons = document.querySelectorAll(".buttons button");
 
 buttons.forEach((button) => {
-  button.addEventListener("click", () =>
-    console.log(playRound(button.id, getComputerChoice()))
-  );
+  button.addEventListener("click", () => {
+    console.log(playRound(button.id, getComputerChoice()));
+    updateScore(playerScore, computerScore);
+  });
 });
 
 // game();
