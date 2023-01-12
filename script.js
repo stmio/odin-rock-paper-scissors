@@ -9,42 +9,37 @@ function getComputerChoice() {
   if (rng === 3) return "scissors";
 }
 
-function playRound(playerSelection, computerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-
-  updateEmoji(playerSelection, computerSelection);
-
-  if (playerSelection === computerSelection) {
-    return "It's a draw! The computer chose " + computerSelection;
-  }
+function getRoundOutcome(playerSelection, computerSelection) {
+  if (playerSelection === computerSelection) return "draw";
 
   if (playerSelection === "rock") {
-    if (computerSelection === "scissors") {
-      playerScore++;
-      return "You won! " + playerSelection + " beats " + computerSelection;
-    } else {
-      computerScore++;
-      return "You lost! " + computerSelection + " beats " + playerSelection;
-    }
+    if (computerSelection === "scissors") return "won";
+    else return "lost";
   } else if (playerSelection === "paper") {
-    if (computerSelection === "rock") {
-      playerScore++;
-      return "You won! " + playerSelection + " beats " + computerSelection;
-    } else {
-      computerScore++;
-      return "You lost! " + computerSelection + " beats " + playerSelection;
-    }
+    if (computerSelection === "rock") return "won";
+    else return "lost";
   } else if (playerSelection === "scissors") {
-    if (computerSelection === "paper") {
-      playerScore++;
-      return "You won! " + playerSelection + " beats " + computerSelection;
-    } else {
-      computerScore++;
-      return "You lost! " + computerSelection + " beats " + playerSelection;
-    }
-  } else {
-    computerScore++;
-    return "You lost - input a valid option!";
+    if (computerSelection === "paper") return "won";
+    else return "lost";
+  }
+}
+
+function updateMessage(outcome, playerSelection, computerSelection) {
+  const roundOutcome = document.getElementById("round-outcome");
+  const roundInfo = document.getElementById("round-info");
+
+  if (outcome === "draw") {
+    roundOutcome.textContent = "It's a draw.";
+    roundInfo.textContent = playerSelection + " ties with " + computerSelection;
+  }
+  if (outcome === "won") {
+    roundOutcome.textContent = "You won!";
+    roundInfo.textContent = playerSelection + " beats " + computerSelection;
+  }
+  if (outcome === "lost") {
+    roundOutcome.textContent = "You lost.";
+    roundInfo.textContent =
+      playerSelection + " loses against " + computerSelection;
   }
 }
 
@@ -52,13 +47,13 @@ function updateEmoji(player, computer) {
   const playerEmoji = document.getElementById("player-selection");
   const computerEmoji = document.getElementById("computer-selection");
 
-  if (player == "rock") playerEmoji.textContent = "✊";
-  if (player == "paper") playerEmoji.textContent = "✋";
-  if (player == "scissors") playerEmoji.textContent = "✌️";
+  if (player === "rock") playerEmoji.textContent = "✊";
+  if (player === "paper") playerEmoji.textContent = "✋";
+  if (player === "scissors") playerEmoji.textContent = "✌️";
 
-  if (computer == "rock") computerEmoji.textContent = "✊";
-  if (computer == "paper") computerEmoji.textContent = "✋";
-  if (computer == "scissors") computerEmoji.textContent = "✌️";
+  if (computer === "rock") computerEmoji.textContent = "✊";
+  if (computer === "paper") computerEmoji.textContent = "✋";
+  if (computer === "scissors") computerEmoji.textContent = "✌️";
 }
 
 function updateScore(player, computer) {
@@ -69,26 +64,19 @@ function updateScore(player, computer) {
   computerScore.textContent = computer;
 }
 
-function game() {
-  console.log(
-    playerScore > computerScore
-      ? "You win!"
-      : playerScore < computerScore
-      ? "You lose!"
-      : "It's a draw!"
-  );
+function playRound(player) {
+  const computer = getComputerChoice();
+  const outcome = getRoundOutcome(player, computer);
 
-  console.log("You had " + playerScore + " points.");
-  console.log("The computer had " + computerScore + " points.");
+  if (outcome === "won") playerScore++;
+  if (outcome === "lost") computerScore++;
+
+  updateMessage(outcome, player, computer);
+  updateEmoji(player, computer);
+  updateScore(playerScore, computerScore);
 }
 
 const buttons = document.querySelectorAll(".buttons button");
-
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    console.log(playRound(button.id, getComputerChoice()));
-    updateScore(playerScore, computerScore);
-  });
-});
-
-// game();
+buttons.forEach((button) =>
+  button.addEventListener("click", () => playRound(button.id))
+);
